@@ -119,6 +119,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "healthcaresystem"
+    }
+  },
+  "defaultProject": "healthcaresystem",
+  "cli": {
+    "analytics": false
+  }
 }
