@@ -1,27 +1,29 @@
 <div class="row">
-    <div class="col-md-6 offset-md-3 mt-4">
-        <h3>Login</h3>
-        <form [formGroup]="loginForm">
-            <div class="form-group">
-              <label for="loginEmail">Email</label>
-              <input type="email" 
-                    class="form-control" 
-                    id="loginUsernameID" 
-                    placeholder="Enter Email"
-                    formControlName="logEmail">  
-            </div>
-            <div class="form-group">
-              <label for="loginPassword">Password</label>
-              <input type="password" 
-                    class="form-control" 
-                    id="loginPasswordID"
-                    placeholder="Password"
-                    formControlName="logPassword">
-            </div>
-            <div class="form-group form-check">
-                <a [routerLink]="['reset-password']">Forgot Password</a>
-            </div>
-            <button type="submit" class="btn btn-primary">Login</button>
-          </form>
-    </div>
+  <div class="col-md-6 offset-md-3 mt-4">
+    <h3>Login</h3>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="loginEmail">Email</label>
+        <input type="email" class="form-control" id="loginUsernameID" placeholder="Enter Email"
+          formControlName="logEmail" [ngClass]="{ 'is-invalid': submitted && loginFormControl.logEmail.errors }">
+        <div *ngIf="submitted && loginFormControl.logEmail.errors" class="invalid-feedback">
+          <div *ngIf="loginFormControl.logEmail.errors.required">Email is required</div>
+          <div *ngIf="loginFormControl.logEmail.errors.pattern">Email must be a valid email address</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="loginPassword">Password</label>
+        <input type="password" class="form-control" id="loginPasswordID" placeholder="Password"
+          formControlName="logPassword" [ngClass]="{ 'is-invalid': submitted && loginFormControl.logPassword.errors }">
+        <div *ngIf="submitted && loginFormControl.logPassword.errors" class="invalid-feedback">
+          <div *ngIf="loginFormControl.logPassword.errors.required">Password is required</div>
+          <div *ngIf="loginFormControl.logPassword.errors.pattern">Invalid Password</div>
+        </div>
+      </div>
+      <div class="form-group form-check">
+        <a [routerLink]="['reset-password']">Forgot Password</a>
+      </div>
+      <button type="submit" class="btn btn-primary">Login</button>
+    </form>
+  </div>
 </div>

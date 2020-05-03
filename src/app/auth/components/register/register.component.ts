@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { FormGroup }   from '@angular/forms';
-
 import { CustomvalidationService } from 'src/app/services/customvalidation.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -11,40 +11,44 @@ import { CustomvalidationService } from 'src/app/services/customvalidation.servi
 })
 export class RegisterComponent implements OnInit {
   registerForm:FormGroup;
-  customValidator: CustomvalidationService;
-  submitted=false; 
-  fb:FormBuilder;
-
-  constructor() { }
+  submitted=false;
+  
+  constructor(
+      private fb:FormBuilder,
+      private customValidator: CustomvalidationService,
+      private router:Router
+    ) { }
 
   ngOnInit(): void {
     this.registerForm = this.fb.group({
-      regEmail:['',[Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
-      frName: ['',[Validators.required, Validators.pattern('^([A-Z][a-z]*((\s[A-Za-z])?[a-z]*)*)$')]],
-      lsName: ['',[Validators.required, Validators.pattern('^([A-Z][a-z]*((\s[A-Za-z])?[a-z]*)*)$')]],
+      regEmail:['',[Validators.required, Validators.email,Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
+      frName: ['',[Validators.required, Validators.pattern('^([A-Z][a-z]*((\s[A-Za-z])?[a-z]*)*)$'),Validators.maxLength(15)]],
+      lsName: ['',[Validators.required, Validators.pattern('^([A-Z][a-z]*((\s[A-Za-z])?[a-z]*)*)$'),Validators.maxLength(15)]],
       ctNumber: ['',[Validators.required,Validators.pattern('^[6-9][0-9]{9}$')]],
-      regPassword: ['',[Validators.required,Validators.minLength(8),Validators.maxLength(14),
-                          Validators.pattern('^(?=.*?[A-Z])(?=.*[$@$!%*?&])(?=.*?[a-z])(?=.*?[0-9]).{8,14}$')]],
+      regPassword: ['',[Validators.required,Validators.pattern('^(?=.*?[A-Z])(?=.*[$@$!%*?&])(?=.*?[a-z])(?=.*?[0-9]).{8,14}$')]],
       confPassword:['',Validators.required]
-    },{
+    },
+    {
       validator:this.customValidator.MatchPassword('regPassword','confPassword'),
     }
-    );
+    );  
   }
 
-  get registerFormControl() {
-    return this.registerForm.controls;
-  }
+  
+  get registerFormControl() { return this.registerForm.controls; }
 
   onSubmit() {
-    this.submitted=true; 
-    if (this.registerForm.valid) {
-      alert('Form Submitted succesfully!!!\n Check the values in browser console.');
-      console.table(this.registerForm.value);
+    this.submitted=true;
+    if (this.registerForm.invalid) {
+      return;
     }
-    else{
-      alert('Invalid Entries');
-    }
+    console.log(this.registerForm.value);
+    this.registerForm.reset();
   }
+
+  onReset() {
+    this.submitted = false;
+    this.registerForm.reset();
+}
 }
 
