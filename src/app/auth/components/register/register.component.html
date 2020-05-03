@@ -2,7 +2,7 @@
   <div class="col-md-6 offset-md-3 mt-4">
     <h3>Register New User</h3>
     <div>
-      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit($event)">
 
         <div class="form-group">
           <label for="registerEmail">Email</label>
@@ -20,7 +20,7 @@
           <input type="text" class="form-control" id="firstNameID" placeholder="Enter First Name"
             formControlName="frName" 
             [ngClass]="{ 'is-invalid': submitted && registerFormControl.frName.errors}">
-          <div *ngIf="submitted && registerFormControl.firstName.errors" class="invalid-feedback">
+          <div *ngIf="submitted && registerFormControl.frName.errors" class="invalid-feedback">
             <span *ngIf="registerFormControl.frName.errors.required">First Name is required</span>
             <div *ngIf="registerFormControl.frName.errors.maxlength">First Name cannot be more than 15 characters
             </div>
@@ -62,8 +62,10 @@
           </div>
         </div>
         <div class="text-center">
-          <button type="submit" class="btn btn-success">Register</button>
+          <button type="submit" [disabled]="loading" class="btn btn-success">Register</button>
           <button class="btn btn-success" type="reset" (click)="onReset()">Reset</button>
+          <a [routerLink]="['/login']" class="btn btn-link">Cancel</a>
+
         </div>
       </form>
     </div>
