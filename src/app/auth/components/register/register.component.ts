@@ -2,10 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { FormGroup } from '@angular/forms';
 import { CustomvalidationService } from 'src/app/services/customvalidation.service';
-import { Router } from '@angular/router';
-import { UserService } from 'src/app/services/user.service';
-import { AlertService } from 'src/app/services/alert.service';
-import { first } from 'rxjs/operators';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 
 @Component({
   selector: 'app-register',
@@ -14,15 +11,16 @@ import { first } from 'rxjs/operators';
 })
 export class RegisterComponent implements OnInit {
   registerForm: FormGroup;
+  form: any = {};
+  isSuccessful = false;
+  isSignUpFailed = false;
+  errorMessage = '';
   submitted = false;
-  loading = false;;
 
   constructor(
     private fb: FormBuilder,
     private customValidator: CustomvalidationService,
-    private router: Router,
-    private userService: UserService,
-    private alertService: AlertService
+    private authenticationService: AuthenticationService
   ) { }
 
   ngOnInit(): void {
@@ -43,30 +41,28 @@ export class RegisterComponent implements OnInit {
 
   get registerFormControl() { return this.registerForm.controls; }
 
-  onSubmit(event) {
-    event.preventDefault();
-    this.submitted = true;
-    if (this.registerForm.invalid) {
-      return;
-    }
-    console.log(this.registerForm.value);
-    this.loading = true;
-    this.userService.register(this.registerForm.value)
-      .pipe(first())
-      .subscribe(
-        data => {
-          this.alertService.success('Registration successful', true);
-          this.router.navigate(['/login']);
-        },
-        error => {
-          this.alertService.error(error);
-          this.loading = false;
-        });
-    this.registerForm.reset();
+  onSubmit() {
+    this.submitted=true;
+    this.authenticationService.register(
+      this.registerForm.value.regEmail,
+      this.registerForm.value.frName,
+      this.registerForm.value.lsName,
+      this.registerForm.value.ctNumber,
+      this.registerForm.value.regPassword
+    ).subscribe(
+      data => {
+        console.log(data);
+        this.isSuccessful = true;
+        this.isSignUpFailed = false;
+      },
+      err => {
+        this.errorMessage = err.error.message;
+        this.isSignUpFailed = true;
+      }
+    );
   }
 
   onReset() {
-    this.submitted = false;
     this.registerForm.reset();
   }
 }

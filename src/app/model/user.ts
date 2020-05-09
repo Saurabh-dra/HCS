@@ -1,8 +1,11 @@
 export class User {
     id: number;
-    regEmail: string;
+    username: string;
     regPassword: string;
     frName: string;
     lsName: string;
-    ctNumber: bigint;
+    ctNumber: number;
+
+    constructor(){}
+
 }
