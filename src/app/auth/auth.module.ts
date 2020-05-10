@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { AuthRoutingModule } from './auth-routing.module';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
-import { ResetPasswordComponent } from './components/reset-password/reset-password.component';import { FormGroup, FormControl, Validators, FormBuilder }  from '@angular/forms';
+import { FormGroup, FormControl, Validators, FormBuilder }  from '@angular/forms';
 import { ReactiveFormsModule} from '@angular/forms';
 import { HomeComponent } from './components/home/home.component';
 import { AdminComponent } from './components/admin/admin.component';
@@ -13,7 +13,8 @@ import { ConsumerComponent } from './components/consumer/consumer.component';
 
 
 @NgModule({
-  declarations: [LoginComponent, RegisterComponent, ResetPasswordComponent, HomeComponent, AdminComponent, FacilitatorComponent, ConsumerComponent],
+  declarations: [LoginComponent, RegisterComponent, 
+    HomeComponent, AdminComponent, FacilitatorComponent, ConsumerComponent],
   imports: [
     CommonModule,
     AuthRoutingModule,
@@ -23,7 +24,6 @@ import { ConsumerComponent } from './components/consumer/consumer.component';
   exports:[
     LoginComponent,
     RegisterComponent, 
-    ResetPasswordComponent,
     HomeComponent,
     AdminComponent, 
     FacilitatorComponent, 

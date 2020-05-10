@@ -3,6 +3,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { FormGroup } from '@angular/forms';
 import { CustomvalidationService } from 'src/app/services/customvalidation.service';
 import { AuthenticationService } from 'src/app/services/authentication.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -20,7 +21,8 @@ export class RegisterComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private customValidator: CustomvalidationService,
-    private authenticationService: AuthenticationService
+    private authenticationService: AuthenticationService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -54,6 +56,7 @@ export class RegisterComponent implements OnInit {
         console.log(data);
         this.isSuccessful = true;
         this.isSignUpFailed = false;
+        this.router.navigateByUrl('/login');
       },
       err => {
         this.errorMessage = err.error.message;

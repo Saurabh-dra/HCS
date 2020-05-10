@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { AlertService } from 'src/app/services/alert.service';
 import { TokenStorageService } from 'src/app/services/token-storage.service';
+import { Role } from 'src/app/model/role.enum';
 
 
 @Component({
@@ -29,7 +30,6 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private authenticationService: AuthenticationService,
-    private alertService: AlertService,
     private tokenStorage:TokenStorageService) { }
 
   ngOnInit(): void {
@@ -59,28 +59,28 @@ export class LoginComponent implements OnInit {
         this.isLoginFailed = false;
         this.isLoggedIn = true;
         this.roles = this.tokenStorage.getUser().roles;
-        this.reloadPage();
+        // this.reloadPage();
+        this.redirectTo();
       },
         err => {
           this.errorMessage = err.error.message;
           this.isLoginFailed = true;
         }
-
       );
   }
-  reloadPage() {
-    window.location.reload();
-  }
-  // redirectTo(){
-  //   if(this.tokenStorage.getUser().roles=='ADMIN'){
-  //     this.router.navigate(['/admin']);
-  //   }
-  //   if(this.tokenStorage.getUser().roles=='FACILITATOR'){
-  //     this.router.navigate(['/facilitator']);
-  //   }
-  //   else{
-  //     this.router.navigate(['/consumer']);
-  //   }
+  // reloadPage() {
+  //   window.location.reload();
   // }
+  redirectTo(){
+    if(this.tokenStorage.getUser().roles===Role.Admin){
+      this.router.navigate(['/admin']);
+    }
+    if(this.tokenStorage.getUser().roles===Role.Facilitator){
+      this.router.navigate(['/facilitator']);
+    }
+    else{
+      this.router.navigate(['/consumer']);
+    }
+  }
 }
 
